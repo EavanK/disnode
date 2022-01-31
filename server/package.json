@@ -2,10 +2,11 @@
   "name": "disnode-server",
   "version": "1.0.0",
   "description": "LHL Final Project",
-  "main": "index.js",
   "engines": {
-    "node": "16.13.2"
+    "node": "16.x",
+    "npm": "8.x"
   },
+  "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "local": "./node_modules/.bin/nodemon",
