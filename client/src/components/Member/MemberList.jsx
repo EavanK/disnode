@@ -1,17 +1,7 @@
 import { useContext, useState } from "react";
 import { ChevronRight, ChevronLeft } from "@mui/icons-material";
-import {
-  Box,
-  IconButton,
-  Drawer,
-  Grid,
-  ListItem,
-  ListItemButton,
-  List,
-  Typography,
-  Divider,
-} from "@mui/material";
-import { useMemberListStyles } from "../styles/useMemberListStyles";
+import { Drawer, ListItem, List, Typography, Divider } from "@mui/material";
+import { useMemberListStyles } from "./useMemberListStyles";
 import ServerContext from "../../contexts/ServerContext";
 import MemberListItem from "./MemberListItem";
 import classNames from "classnames";
@@ -36,7 +26,6 @@ const useStyles = makeStyles({
     },
   },
   button: {
-    // justifyContent: "space-around",
     cursor: "pointer",
     opacity: "0.7",
     "&:hover": {
@@ -58,7 +47,6 @@ export default function MemberList(props) {
   const drawerClasses = useMemberListStyles();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-
   const {
     app: { members },
   } = useContext(ServerContext);
@@ -74,7 +62,7 @@ export default function MemberList(props) {
     setOpen(false);
   };
 
-  // TODO: refactor this mess (when in the mood)
+  // role in the server is admin
   const admins = members
     .filter((member) => member.role === "admin")
     .map((member) => {
@@ -87,6 +75,8 @@ export default function MemberList(props) {
         />
       );
     });
+
+  // role in the server is user
   const users = members
     .filter((member) => member.role === "user")
     .map((member) => {
@@ -99,6 +89,8 @@ export default function MemberList(props) {
         />
       );
     });
+
+  // role in the server is owner
   const owner = members
     .filter((member) => member.role === "owner")
     .map((member) => {
@@ -113,13 +105,11 @@ export default function MemberList(props) {
     });
 
   return (
-    // <Grid sx={1} className={classes.members}>
     <Drawer
       className={drawerClass}
       variant="permanent"
       anchor="right"
       open={open}
-      // sx={{ width: "100%" }}
     >
       <List className={classes.members}>
         <ListItem
@@ -169,7 +159,6 @@ export default function MemberList(props) {
         )}
         {users}
       </List>
-      {/* </Grid> */}
     </Drawer>
   );
 }

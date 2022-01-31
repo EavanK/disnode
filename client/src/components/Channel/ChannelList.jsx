@@ -1,16 +1,15 @@
 import { useContext } from "react";
-import { List, ListItem, Box, Grid } from "@mui/material";
+import { List, ListItem, Box } from "@mui/material";
 import ChannelListItem from "./ChannelListItem";
-import NewChannelDialog from "./NewChannelDialog";
+import NewChannelDialog from "./Create/NewChannelDialog";
 import ServerContext from "../../contexts/ServerContext";
-import ServerMenu from "./ServerMenu";
+import ServerMenu from "./ServerMenu/ServerMenu";
 import { makeStyles } from "@mui/styles";
 import AuthContext from "../../contexts/AuthContext";
 
 const useStyles = makeStyles({
   channels: {
     borderRight: "1px solid rgb(4,11,12,0.5)",
-    // minWidth: "20em",
     width: "30%",
     maxWidth: "17em",
     backgroundColor: "rgb(173, 169, 168,0.9)",
@@ -22,32 +21,20 @@ const useStyles = makeStyles({
 
 export default function ChannelList() {
   const classes = useStyles();
-
   const {
-    app: { channels, channel, members },
-    setChannel,
+    app: { channels, members },
   } = useContext(ServerContext);
   const {
     state: { user },
   } = useContext(AuthContext);
 
   const parsedChannels = Object.values(channels).map((ch) => {
-    return (
-      <ChannelListItem
-        key={ch.id}
-        id={ch.id}
-        channel={ch}
-        // title={ch.title}
-        // setChannel={setChannel}
-      />
-    );
+    return <ChannelListItem key={ch.id} id={ch.id} channel={ch} />;
   });
   return (
     <Box className={classes.channels}>
-      {/* // <Grid className={classes.channels} xs={2.5}> */}
       <List>
         <ServerMenu />
-
         {channels && parsedChannels}
         {members.find((m) => m.user_id === user.id).role !== "user" && (
           <ListItem className={classes.add}>
@@ -55,7 +42,6 @@ export default function ChannelList() {
           </ListItem>
         )}
       </List>
-      {/* </Grid> */}
     </Box>
   );
 }

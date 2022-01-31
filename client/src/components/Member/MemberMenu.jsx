@@ -1,29 +1,21 @@
 import { useContext, useState } from "react";
 import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import Person from "@mui/icons-material/Person";
 import Admin from "@mui/icons-material/AdminPanelSettings";
 import Onwership from "@mui/icons-material/CompareArrows";
-
-import { makeStyles } from "@mui/styles";
 import {
   Box,
   Divider,
-  IconButton,
   ListItemIcon,
   Menu,
   MenuItem,
   MenuList,
-  Tooltip,
 } from "@mui/material";
 import MemberDialog from "./MemberDialog";
 import AuthContext from "../../contexts/AuthContext";
 import ServerContext from "../../contexts/ServerContext";
 
-const useStyles = makeStyles(() => ({
-  root: { backgroundColor: "white" },
-}));
 export default function MemberMenu(props) {
   const { anchor, setAnchor, member } = props;
   const {
@@ -34,7 +26,6 @@ export default function MemberMenu(props) {
   } = useContext(ServerContext);
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("");
-  const classes = useStyles();
 
   const [PROFILE, ADD, ADMIN, DEMOTE, KICK, OWNERSHIP] = [
     "PROFILE",
@@ -46,27 +37,18 @@ export default function MemberMenu(props) {
   ];
 
   const role = members.find((m) => m.user_id === user.id).role;
-  // const friend = friends.find((f) => f.user_id === member.user_id);
-  // const receive = received.find((r) => r.sender_id === member.user_id);
-  // const send = sent.find((s) => s.receiver_id === member.user_id);
-
-  // tartget a member that user clicks
-  // const handleAnchor = (e) => {
-  //   setAnchor(e.currentTarget);
-  // };
-
-  // const handleAnchorClose = (e) => {
-  //   setAnchor(false);
-  // };
 
   const handleAction = (action) => {
     setOpen(true);
     setAnchor(false);
     setAction(action);
   };
+  // user is not friend with the member
   const isNotFriend = (memberId) => {
     return !user.friends.some((f) => f.user_id === memberId);
   };
+
+  // user received/sent friend request from/to member
   const isNotPending = (memberId) => {
     return (
       !user.requests.received.some((f) => f.user_id === memberId) &&
@@ -76,11 +58,6 @@ export default function MemberMenu(props) {
 
   return (
     <Box>
-      {/* <Tooltip title={"Options"}>
-        <IconButton onClick={handleAnchor} sx={{ mr: "20px" }}>
-          <Settings fontSize="small" />
-        </IconButton>
-      </Tooltip> */}
       <Menu
         sx={{ mt: "45px" }}
         id="menu-appbar"

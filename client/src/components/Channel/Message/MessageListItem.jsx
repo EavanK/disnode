@@ -19,9 +19,9 @@ import AuthContext from "../../../contexts/AuthContext";
 import { deleteMessage } from "../../../network/messageApi";
 import { DELETE_MESSAGE, MESSAGE_DELETE } from "../../../utils/constants";
 import { faCrown } from "@fortawesome/free-solid-svg-icons/faCrown";
-import StarIcon from "@mui/icons-material/Star";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const useStyles = makeStyles(() => ({
   message: {
     alignItems: "flex-start",
@@ -37,8 +37,6 @@ const useStyles = makeStyles(() => ({
       fontWeight: "bold",
       fontSize: "1.1em",
       color: "rgb(199, 58, 58,1)",
-      // textTransform: "uppercase",
-      // "&.MuiTypography-root": { color: "green" },
     },
   },
   none: {
@@ -86,12 +84,6 @@ const useStyles = makeStyles(() => ({
 
     fontSize: "medium",
   },
-  // right: {
-  //   position: "relative",
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   height: "100%",
-  // },
   delete: {
     position: "absolute",
     top: 0,
@@ -110,20 +102,14 @@ const useStyles = makeStyles(() => ({
       color: "black",
     },
   },
-
   mention: {
     backgroundColor: "rgba(250,209,102, 0.3)",
     borderRadius: 5,
     borderLeft: "5px solid rgba(250,209,102, 1)",
   },
-  // right: {
-  //   position: "relative",
-  //   display: "flex",
-  //   flexDirection: "column",
-  // },
 }));
+
 export default function MessageListItem(props) {
-  // const classes = useMessageListItemStyles();
   const classes = useStyles();
   const { message, index, messages } = props;
   const { views } = message;
@@ -135,6 +121,7 @@ export default function MessageListItem(props) {
     state: { user, socket },
   } = useContext(AuthContext);
   const [throttle, setThrottle] = useState(false);
+
   const nameClasses = classNames(classes.name, {
     [classes.owner]:
       members.find((m) => m.user_id === message.sender_id)?.role === "owner",
@@ -155,10 +142,6 @@ export default function MessageListItem(props) {
     tooltip = `seen by ${views[0].viewer_nickname} and ${views[1].viewer_nickname}`;
   if (views.length === 3)
     tooltip = `seen by ${views[0].viewer_nickname}, ${views[1].viewer_nickname} and ${views[2].viewer_nickname}`;
-
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, []);
 
   const messageClasses = classNames(classes.body, {
     [classes.mention]: message.mention,
@@ -191,12 +174,7 @@ export default function MessageListItem(props) {
         component="li"
         sx={{ backgroundColor: "rgb(16, 16, 16,0.4)" }}
       />
-      <ListItem
-        // secondaryAction={
-
-        // }
-        className={classes.message}
-      >
+      <ListItem className={classes.message}>
         <ListItemAvatar className={classes.avatar}>
           <Avatar
             alt={message.sender_nickname}
@@ -216,13 +194,11 @@ export default function MessageListItem(props) {
         )}
         <Stack className={classes.stack}>
           <ListItemText
-            // primary={message.sender_nickname}
             secondary={message.sender_nickname}
             className={nameClasses}
           />
           <Divider className={classes.divider} />
           <ListItemText
-            // inset
             title={moment(message.sent_at).format(
               "dddd, MMMM Do YYYY, h:mm:ss a"
             )}
@@ -231,7 +207,6 @@ export default function MessageListItem(props) {
             className={messageClasses}
           />
         </Stack>
-        {/* <Box className={classes.right}> */}
         {(message.sender_id === user.id || role !== "user") && (
           <IconButton
             aria-label="delete"
@@ -270,7 +245,6 @@ export default function MessageListItem(props) {
             </AvatarGroup>
           </Tooltip>
         )}
-        {/* </Box> */}
       </ListItem>
     </>
   );

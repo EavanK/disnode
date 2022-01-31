@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import {
   Button,
   Dialog,
@@ -6,14 +6,12 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  Stack,
-  SvgIcon,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import MemberProfile from "./MemberProfile";
 import SteamSvg from "../SvgIcons/SteamSvg";
 import TwitterSvg from "../SvgIcons/TwitterSvg";
-import { getMembers, removeMember, updateRole } from "../../network/memberApi";
+import { removeMember, updateRole } from "../../network/memberApi";
 import ServerContext from "../../contexts/ServerContext";
 import AuthContext from "../../contexts/AuthContext";
 import { sendRequest } from "../../network/friendApi";
@@ -28,7 +26,6 @@ import {
   EDIT_REQEUSTS,
   UPDATE_REQUESTS,
 } from "../../utils/constants";
-// import Blizzard from "../SvgIcons/blizzard.svg";
 
 const [PROFILE, ADD, ADMIN, DEMOTE, KICK, OWNERSHIP] = [
   "PROFILE",
@@ -69,6 +66,7 @@ const useStyles = makeStyles(() => ({
     },
   },
 }));
+
 export default function MemberDialog(props) {
   const { action, member, setOpen, setAction, open } = props;
   const {
@@ -92,38 +90,38 @@ export default function MemberDialog(props) {
 
   const handleAction = async () => {
     // console.log(`making a ${action} request on member: ${member.nickname}`);
-    try {
-      if (action === ADMIN) {
-        // getting back an array of members with updated role
-        const members = await updateRole(server.id, member.id, "admin");
-        closeDialog(members);
-      } else if (action === DEMOTE) {
-        // getting back an array of members with updated role
-        const members = await updateRole(server.id, member.id, "user");
-        closeDialog(members);
-      } else if (action === OWNERSHIP) {
-        const getMembers = await updateRole(server.id, member.id, "owner");
-        const myMemeberId = getMembers.find((m) => m.user_id === user.id).id;
-        const members = await updateRole(server.id, myMemeberId, "admin");
-        closeDialog(members);
-      } else if (action === KICK) {
-        await removeMember(server.id, member.id);
-        socket.emit(MEMBER_KICK, member, server.id);
-        // const member = await getMembers(server.id);
-        setOpen(false);
-        setAction(null);
-        appDispatch({
-          type: DELETE_MEMBER,
-          member,
-        });
-      } else if (action === ADD) {
-        const requests = await sendRequest(member.user_id);
-        dispatch({ type: UPDATE_REQUESTS, requests });
-        setOpen(false);
-        setAction(null);
-      }
-    } catch (e) {}
+    if (action === ADMIN) {
+      // getting back an array of members with updated role
+      const members = await updateRole(server.id, member.id, "admin");
+      closeDialog(members);
+    } else if (action === DEMOTE) {
+      // getting back an array of members with updated role
+      const members = await updateRole(server.id, member.id, "user");
+      closeDialog(members);
+      // passing owershipt to one of admin user
+    } else if (action === OWNERSHIP) {
+      const getMembers = await updateRole(server.id, member.id, "owner");
+      const myMemeberId = getMembers.find((m) => m.user_id === user.id).id;
+      const members = await updateRole(server.id, myMemeberId, "admin");
+      closeDialog(members);
+      // kick
+    } else if (action === KICK) {
+      await removeMember(server.id, member.id);
+      socket.emit(MEMBER_KICK, member, server.id);
+      setOpen(false);
+      setAction(null);
+      appDispatch({
+        type: DELETE_MEMBER,
+        member,
+      });
+    } else if (action === ADD) {
+      const requests = await sendRequest(member.user_id);
+      dispatch({ type: UPDATE_REQUESTS, requests });
+      setOpen(false);
+      setAction(null);
+    }
   };
+
   const connetion = member ? member.socials : user.socials;
   const parsedConnections = connetion
     ?.filter((e) => e.url)

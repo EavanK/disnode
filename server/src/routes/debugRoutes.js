@@ -14,9 +14,7 @@ router.get("/reset_db", (req, res) => {
 router.post("/test", async (req, res) => {
   const { userId, serverId } = req.body;
   try {
-    // console.log(userId, serverId);
     const result = await Member.inServerByUser(userId, serverId);
-    // console.log(result);
     res.json(result);
   } catch (e) {
     res.send("error");

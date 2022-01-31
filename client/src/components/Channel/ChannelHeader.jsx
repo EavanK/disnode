@@ -1,12 +1,11 @@
 import { IconButton, ListItem, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { makeStyles } from "@mui/styles";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import ServerContext from "../../contexts/ServerContext";
 import AuthContext from "../../contexts/AuthContext";
 import SettingsIcon from "@mui/icons-material/Settings";
-import ChannelMenuList from "./ChannelMenuList";
-// import EditIcon from "@mui/icons-material/Edit";
+import ChannelMenuList from "./Edit/ChannelMenuList";
 
 const useStyles = makeStyles({
   header: {
@@ -31,18 +30,13 @@ const useStyles = makeStyles({
 
 export default function ChannelHeader() {
   const {
-    app: { channel, members, channels },
-    setChannel,
+    app: { channel, members },
   } = useContext(ServerContext);
   const {
     state: { user },
   } = useContext(AuthContext);
   const classes = useStyles();
   const [anchor, setAnchor] = useState(false);
-
-  // useEffect(() => {
-  //   setChannel(channel?.id);
-  // }, [channels]);
 
   return (
     <ListItem className={classes.header} alignItems="center">
@@ -59,7 +53,6 @@ export default function ChannelHeader() {
           >
             <SettingsIcon
               sx={{
-                // fontSize: "large",
                 color: "white",
                 opacity: 0.5,
                 "&:hover": { opacity: 1 },

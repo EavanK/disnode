@@ -10,7 +10,6 @@ import TagIcon from "@mui/icons-material/Tag";
 import classNames from "classnames";
 
 //style
-import { useChannelListStyles } from "../styles/useChannelListItemStyles";
 import { makeStyles } from "@mui/styles";
 import ServerContext from "../../contexts/ServerContext";
 import AuthContext from "../../contexts/AuthContext";
@@ -35,10 +34,9 @@ const useStyles = makeStyles({
   icon: { minWidth: "auto", paddingRight: "0.5em" },
 });
 export default function ChannelListItem(props) {
-  // const classes = useChannelListStyles();
   const { app, setChannel } = useContext(ServerContext);
   const {
-    state: { user, socket },
+    state: { socket },
   } = useContext(AuthContext);
 
   const classes = useStyles();
@@ -63,13 +61,7 @@ export default function ChannelListItem(props) {
 
   return (
     <Box>
-      <ListItem
-        className={channelClass}
-        // button
-        // key={id}
-        // disableRipple
-        onClick={handleChannelClick}
-      >
+      <ListItem className={channelClass} onClick={handleChannelClick}>
         <ListItemIcon className={classes.icon}>
           <TagIcon fontSize="medium" sx={{ color: "rgb(199, 58, 58,1)" }} />
         </ListItemIcon>

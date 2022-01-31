@@ -8,7 +8,7 @@ const Social = require("../db/queries/socials");
 const Friend = require("../db/queries/friends");
 const Request = require("../db/queries/requests");
 
-// Testing token
+// Get user Data
 router.get("/me", async (req, res) => {
   const userId = req.user.id;
   try {
@@ -27,17 +27,17 @@ router.get("/me", async (req, res) => {
 });
 
 // get a specific user data (NOT USED)
-router.get("/users/:id", async (req, res) => {
-  const userId = req.params.id;
-  try {
-    const user = await User.byID(userId);
-    if (!user) return res.status(400).send("User not found");
-    delete user.password;
-    res.status(200).send(user);
-  } catch (e) {
-    res.status(500).send("Internal Server Error");
-  }
-});
+// router.get("/users/:id", async (req, res) => {
+//   const userId = req.params.id;
+//   try {
+//     const user = await User.byID(userId);
+//     if (!user) return res.status(400).send("User not found");
+//     delete user.password;
+//     res.status(200).send(user);
+//   } catch (e) {
+//     res.status(500).send("Internal Server Error");
+//   }
+// });
 
 // updating/editing user
 // using jwt to get userID instead

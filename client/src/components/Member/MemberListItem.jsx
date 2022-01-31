@@ -1,23 +1,14 @@
 import {
   Avatar,
-  Typography,
   ListItemText,
   ListItem,
-  Container,
-  Box,
-  List,
   styled,
   Tooltip,
   IconButton,
-  Divider,
 } from "@mui/material";
-// import {
-//   useMemberListItemStyles,
-//   StyledBadge,
-// } from "../styles/useMemberListItemStyles";
 import classNames from "classnames";
 import MemberMenu from "./MemberMenu";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import Badge from "@mui/material/Badge";
 import { Settings } from "@mui/icons-material";
@@ -51,22 +42,11 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const SmallAvatar = styled(Avatar)(({ theme }) => ({
-  width: 22,
-  height: 22,
-  border: `2px solid ${theme.palette.background.paper}`,
-}));
-
 const useStyles = makeStyles({
-  members: {
-    // paddingTop: "0.5em",
-  },
   member: {
     justifyContent: "center",
     cursor: "pointer",
-    // borderBottom: "1px solid rgb(4,11,12,0.1)",
   },
-
   nickname: { paddingLeft: "2em", fontSize: "1em" },
   avatar: { width: "45px", height: "45px" },
   openedAvatars: {
@@ -82,7 +62,6 @@ export default function MemberListItem(props) {
   const { member, open } = props;
   const [anchor, setAnchor] = useState(false);
 
-  // const classes = useMemberListItemStyles(open);
   const classes = useStyles();
   const memberListClass = classNames(classes.member, {
     [classes.memberListOpen]: !open,
@@ -90,17 +69,13 @@ export default function MemberListItem(props) {
   const avatarClasses = classNames(classes.avatar, {
     [classes.openedAvatars]: open,
   });
-  // const badgeClass = classNames(classes.userBadge, {
-  //   [classes.userBadgeOpen]: open,
-  // });
+
   const handleAnchor = (e) => {
     setAnchor(e.currentTarget);
   };
 
   return (
     <>
-      {/* <Box className={classes.memberIcon}> */}
-
       <ListItem disableGutters className={memberListClass}>
         <Tooltip title={member.nickname} arrow placement="left">
           <StyledBadge
@@ -122,7 +97,6 @@ export default function MemberListItem(props) {
               inset
               primary={member.nickname}
               className={classes.nickname}
-              // sx={{ textAlign: "center" }}
             />
             <Tooltip title={"Options"}>
               <IconButton onClick={handleAnchor} sx={{ mr: "20px" }}>
@@ -132,11 +106,8 @@ export default function MemberListItem(props) {
           </>
         )}
 
-        {/* {open && ( */}
         <MemberMenu anchor={anchor} setAnchor={setAnchor} member={member} />
-        {/* )} */}
       </ListItem>
-      {/* </Box> */}
     </>
   );
 }
